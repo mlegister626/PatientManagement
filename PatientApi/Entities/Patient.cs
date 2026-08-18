@@ -31,8 +31,7 @@ namespace PatientApi.Entities
 
         [Required]
         [MaxLength(50)]
-        [Column("FacilityId")]
-        [ForeignKey("Facility")]
+        [ForeignKey("FacilityId")]
         public int FacilityId { get; set; } = 0;
         public virtual Facility Facility { get; set; } = null!;
     }

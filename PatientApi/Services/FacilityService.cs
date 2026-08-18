@@ -22,7 +22,7 @@ public class FacilityService : IFacilityService
     public async Task<IEnumerable<FacilityDto>> ListFacilitiesAsync()
     {
         var facilities = await _facilityRepository.GetAllAsync();
-        return facilities.Select(f => MapToDto(f));
+        return facilities.Select(MapToDto);
     }
 
     public async Task<FacilityDto> CreateFacilityAsync(CreateFacilityDto facility)
@@ -35,9 +35,14 @@ public class FacilityService : IFacilityService
 
     public async Task<FacilityDto> UpdateFacilityAsync(int id, UpdateFacilityDto facility)
     {
-        var updatedFacility = MapToDto(facility);
-        await _facilityRepository.UpdateAsync(updatedFacility);
-        return MapToDto(updatedFacility);
+        var facilityEntity = new Facility
+        {
+            FacilityId = id,
+            Name = facility.Name
+        };
+        await _facilityRepository.UpdateAsync(facilityEntity);
+        var updated = await _facilityRepository.GetByIdAsync(id);
+        return MapToDto(updated!);
     }
 
     public async Task<bool> DeleteFacilityAsync(int id)
@@ -45,18 +50,19 @@ public class FacilityService : IFacilityService
         return await _facilityRepository.DeleteAsync(id);
     }
 
-    private static UpdateFacilityDto MapToDto(Facility facility)
+    private static FacilityDto MapToDto(Facility facility)
     {
-        return new UpdateFacilityDto
+        return new FacilityDto
         {
+            FacilityId = facility.FacilityId,
             Name = facility.Name
         };
     }
+
     private static Facility MapFromDto(CreateFacilityDto facility)
     {
         return new Facility
         {
-            FacilityId = facility.FacilityId,
             Name = facility.Name
         };
     }

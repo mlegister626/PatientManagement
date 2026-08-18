@@ -14,10 +14,6 @@ namespace PatientApi.Migrations
                 name: "FK_Patients_Facilities_FacilityId",
                 table: "Patients");
 
-            migrationBuilder.DropColumn(
-                name: "Facility",
-                table: "Patients");
-
             migrationBuilder.AlterColumn<int>(
                 name: "FacilityId",
                 table: "Patients",
