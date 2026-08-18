@@ -7,7 +7,6 @@ namespace PatientApi.Entities;
 public class Facility
 {
     [Key]
-    [MaxLength(10)]
     [Column("FacilityId")]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int FacilityId { get; set; }

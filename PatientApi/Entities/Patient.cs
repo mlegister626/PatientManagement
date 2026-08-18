@@ -30,7 +30,6 @@ namespace PatientApi.Entities
         public DateTime DOB { get; set; }
 
         [Required]
-        [MaxLength(50)]
         [ForeignKey("FacilityId")]
         public int FacilityId { get; set; } = 0;
         public virtual Facility Facility { get; set; } = null!;
