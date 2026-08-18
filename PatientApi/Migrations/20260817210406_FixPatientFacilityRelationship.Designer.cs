@@ -60,7 +60,6 @@ namespace PatientApi.Migrations
                         .HasColumnName("DOB");
 
                     b.Property<int>("FacilityId")
-                        .HasMaxLength(50)
                         .HasColumnType("int")
                         .HasColumnName("FacilityId");
 

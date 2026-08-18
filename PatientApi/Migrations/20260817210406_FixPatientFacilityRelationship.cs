@@ -18,7 +18,6 @@ namespace PatientApi.Migrations
                 name: "FacilityId",
                 table: "Patients",
                 type: "int",
-                maxLength: 50,
                 nullable: false,
                 defaultValue: 0,
                 oldClrType: typeof(int),
@@ -47,8 +46,7 @@ namespace PatientApi.Migrations
                 type: "int",
                 nullable: true,
                 oldClrType: typeof(int),
-                oldType: "int",
-                oldMaxLength: 50);
+                oldType: "int");
 
             migrationBuilder.AddColumn<string>(
                 name: "Facility",

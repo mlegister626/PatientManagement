@@ -21,9 +21,9 @@ namespace PatientApi.Migrations
                 name: "Facilities",
                 columns: table => new
                 {
-                    FacilityId = table.Column<int>(type: "int", maxLength: 10, nullable: false)
+                    FacilityId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false)
+                    Name = table.Column<string>(type: "varchar(150)", maxLength: 150, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>

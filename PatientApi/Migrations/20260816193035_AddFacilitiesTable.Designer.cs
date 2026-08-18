@@ -29,7 +29,6 @@ namespace PatientApi.Migrations
                 {
                     b.Property<int>("FacilityId")
                         .ValueGeneratedOnAdd()
-                        .HasMaxLength(10)
                         .HasColumnType("int")
                         .HasColumnName("FacilityId");
 
@@ -37,8 +36,8 @@ namespace PatientApi.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar(50)")
+                        .HasMaxLength(150)
+                        .HasColumnType("varchar(150)")
                         .HasColumnName("Name");
 
                     b.HasKey("FacilityId");
