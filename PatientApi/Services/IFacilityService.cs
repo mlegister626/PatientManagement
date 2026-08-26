@@ -8,4 +8,6 @@ public interface IFacilityService
     Task<FacilityDto> CreateFacilityAsync(CreateFacilityDto facility);
     Task<FacilityDto> UpdateFacilityAsync(int id, UpdateFacilityDto facility);
     Task<bool> DeleteFacilityAsync(int id);
+
+    Task<ICollection<PatientDto>> GetPatientsByFacilityIdAsync(int facilityId);
 }

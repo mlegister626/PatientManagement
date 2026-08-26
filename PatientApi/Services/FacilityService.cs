@@ -50,6 +50,19 @@ public class FacilityService : IFacilityService
         return await _facilityRepository.DeleteAsync(id);
     }
 
+    public async Task<ICollection<PatientDto>> GetPatientsByFacilityIdAsync(int facilityId)
+    {
+        var patients = await _facilityRepository.GetPatientsByFacilityIdAsync(facilityId);
+        return patients.Select(p => new PatientDto
+        {
+            PatientId = p.PatientId,
+            FirstName = p.FirstName,
+            LastName = p.LastName,
+            DOB = p.DOB,
+            FacilityId = p.FacilityId
+        }).ToList();
+    }
+
     private static FacilityDto MapToDto(Facility facility)
     {
         return new FacilityDto

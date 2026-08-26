@@ -88,4 +88,20 @@ public class FacilityController : ControllerBase
         await _facilityService.DeleteFacilityAsync(id);
         return NoContent();
     }
+
+
+    [HttpGet("AllPatients/{id:int}")]
+    [ProducesResponseType(typeof(IEnumerable<PatientDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<IEnumerable<PatientDto>>> GetAllPatients(int id)
+    {
+        var facility = await _facilityService.GetByIdAsync(id);
+        if (facility is null)
+        {
+            return NotFound(new { message = $"Facility with id {id} was not found." });
+        }
+
+        var patients = await _facilityService.GetPatientsByFacilityIdAsync(id);
+        return Ok(patients);
+    }
 }

@@ -48,4 +48,9 @@ public class FacilityRepository : IFacilityRepository
     {
         return await _context.Facilities.AnyAsync(f => f.FacilityId == facilityId);
     }
+
+    public async Task<ICollection<Patient>> GetPatientsByFacilityIdAsync(int facilityId)
+    {
+        return await _context.Patients.Where(p => p.FacilityId == facilityId).ToListAsync();
+    }
 }

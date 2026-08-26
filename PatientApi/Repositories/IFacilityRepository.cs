@@ -14,4 +14,6 @@ public interface IFacilityRepository
     Task<bool> UpdateAsync(Facility facility);
     Task<bool> DeleteAsync(int facilityId);
     Task<bool> ExistsAsync(int facilityId);
+
+    Task<ICollection<Patient>> GetPatientsByFacilityIdAsync(int facilityId);
 }
