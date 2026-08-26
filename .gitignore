@@ -1,0 +1,11 @@
+PatientApi/.gitignore
+# Environment variables (local secrets - never commit)
+.env
+
+# Build output
+bin/
+obj/
+
+# User-specific files
+*.user
+.vs/

@@ -19,7 +19,6 @@ namespace PatientApi.Dtos
         public DateTime DOB { get; set; }
 
         [Required]
-        [MaxLength(50)]
         public int FacilityId { get; set; } = 0;
     }
 }

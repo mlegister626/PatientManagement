@@ -5,6 +5,10 @@ using PatientApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// top of Program.cs
+DotNetEnv.Env.Load();
+
+
 // ---- Services ----
 
 builder.Services.AddControllers();
@@ -12,8 +16,18 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // EF Core + MySQL (Pomelo provider)
-var connectionString = builder.Configuration.GetConnectionString("PatientDb")
-    ?? throw new InvalidOperationException("Connection string 'PatientDb' not found.");
+var dbHost = Environment.GetEnvironmentVariable("DB_HOST");
+var dbPort = Environment.GetEnvironmentVariable("DB_PORT");
+var dbName = Environment.GetEnvironmentVariable("DB_NAME");
+var dbUser = Environment.GetEnvironmentVariable("DB_USER");
+var dbPass = Environment.GetEnvironmentVariable("DB_PASSWORD");
+
+if (string.IsNullOrEmpty(dbHost) || string.IsNullOrEmpty(dbName))
+{
+    throw new InvalidOperationException("Database connection environment variables are missing.");
+}
+
+var connectionString = $"Server={dbHost};Port={dbPort};Database={dbName};User Id={dbUser};Password={dbPass};";
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
