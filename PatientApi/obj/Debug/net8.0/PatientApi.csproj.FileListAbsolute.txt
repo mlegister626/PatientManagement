@@ -1,5 +1,4 @@
 C:\Users\mlegi\Desktop\DotNetProjects\PatientManagement\PatientApi\bin\Debug\net8.0\appsettings.Development.json
-C:\Users\mlegi\Desktop\DotNetProjects\PatientManagement\PatientApi\bin\Debug\net8.0\appsettings.json
 C:\Users\mlegi\Desktop\DotNetProjects\PatientManagement\PatientApi\bin\Debug\net8.0\PatientApi.staticwebassets.endpoints.json
 C:\Users\mlegi\Desktop\DotNetProjects\PatientManagement\PatientApi\bin\Debug\net8.0\PatientApi.exe
 C:\Users\mlegi\Desktop\DotNetProjects\PatientManagement\PatientApi\bin\Debug\net8.0\PatientApi.deps.json
@@ -105,3 +104,5 @@ C:\Users\mlegi\Desktop\DotNetProjects\PatientManagement\PatientApi\obj\Debug\net
 C:\Users\mlegi\Desktop\DotNetProjects\PatientManagement\PatientApi\obj\Debug\net8.0\PatientApi.pdb
 C:\Users\mlegi\Desktop\DotNetProjects\PatientManagement\PatientApi\obj\Debug\net8.0\PatientApi.genruntimeconfig.cache
 C:\Users\mlegi\Desktop\DotNetProjects\PatientManagement\PatientApi\obj\Debug\net8.0\ref\PatientApi.dll
+C:\Users\mlegi\Desktop\DotNetProjects\PatientManagement\PatientApi\bin\Debug\net8.0\DotNetEnv.dll
+C:\Users\mlegi\Desktop\DotNetProjects\PatientManagement\PatientApi\bin\Debug\net8.0\Superpower.dll
