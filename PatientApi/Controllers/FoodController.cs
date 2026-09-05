@@ -26,11 +26,6 @@ public class FoodController : ControllerBase
     public async Task<ActionResult<FoodDto>> GetFood(int id)
     {
         var food = await _foodService.GetFoodAsync(id);
-        if (food == null)
-        {
-            return NotFound();
-        }
-
         return Ok(food);
     }
 
@@ -45,11 +40,6 @@ public class FoodController : ControllerBase
     public async Task<ActionResult<FoodDto>> UpdateFood(int id, UpdateFoodDto food)
     {
         var updatedFood = await _foodService.UpdateFoodAsync(id, food);
-        if (updatedFood == null)
-        {
-            return NotFound();
-        }
-
         return Ok(updatedFood);
     }
 
@@ -57,11 +47,6 @@ public class FoodController : ControllerBase
     public async Task<ActionResult<bool>> DeleteFood(int id)
     {
         var result = await _foodService.DeleteFoodAsync(id);
-        if (!result)
-        {
-            return NotFound();
-        }
-
         return Ok(result);
     }
 }

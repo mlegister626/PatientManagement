@@ -36,6 +36,12 @@ public class FacilityService : IFacilityService
 
     public async Task<FacilityDto> UpdateFacilityAsync(int id, UpdateFacilityDto facility)
     {
+
+        var existingFacility = await _facilityRepository.GetByIdAsync(id);
+        if (existingFacility is null)
+        {
+            throw new NotFoundException($"Facility with ID {id} not found.");
+        }
         var facilityEntity = new Facility
         {
             FacilityId = id,

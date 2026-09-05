@@ -33,12 +33,6 @@ namespace PatientApi.Controllers
         public async Task<ActionResult<PatientDto>> GetById(int id)
         {
             var patient = await _patientService.GetPatientByIdAsync(id);
-
-            if (patient is null)
-            {
-                return NotFound(new { message = $"Patient with id {id} was not found." });
-            }
-
             return Ok(patient);
         }
 
@@ -48,17 +42,7 @@ namespace PatientApi.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<PatientDto>> Create([FromBody] CreatePatientDto dto)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
             var facility = await _facilityService.GetByIdAsync(dto.FacilityId);
-            if (facility is null)
-            {
-                return BadRequest(new { message = $"Facility with id {dto.FacilityId} does not exist." });
-            }
-
             var created = await _patientService.CreatePatientAsync(dto);
             return CreatedAtAction(nameof(GetById), new { id = created.PatientId }, created);
         }
@@ -70,18 +54,7 @@ namespace PatientApi.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Update(int id, [FromBody] UpdatePatientDto dto)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
             var updated = await _patientService.UpdatePatientAsync(id, dto);
-
-            if (!updated)
-            {
-                return NotFound(new { message = $"Patient with id {id} was not found." });
-            }
-
             return NoContent();
         }
 
@@ -92,12 +65,6 @@ namespace PatientApi.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             var deleted = await _patientService.DeletePatientAsync(id);
-
-            if (!deleted)
-            {
-                return NotFound(new { message = $"Patient with id {id} was not found." });
-            }
-
             return NoContent();
         }
 
