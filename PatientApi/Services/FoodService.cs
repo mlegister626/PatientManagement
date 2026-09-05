@@ -1,6 +1,7 @@
 using PatientApi.Repositories;
 using PatientApi.Entities;
-
+using PatientApi.Dtos;
+using PatientApi.Exceptions;
 public class FoodService : IFoodService
 {
     private readonly IFoodRepository _foodRepository;
@@ -13,7 +14,7 @@ public class FoodService : IFoodService
     public async Task<IEnumerable<FoodDto>> ListFoodsAsync()
     {
         var foods = await _foodRepository.ListFoodsAsync();
-        return foods.Select(f => new FoodDto
+        return foods is null ? throw new NotFoundException("No foods found.") : foods.Select(f => new FoodDto
         {
             Id = f.FoodId,
             Name = f.Name,
@@ -24,7 +25,7 @@ public class FoodService : IFoodService
     public async Task<FoodDto?> GetFoodAsync(int id)
     {
         var food = await _foodRepository.GetFoodByIdAsync(id);
-        if (food == null) return null;
+        if (food == null) throw new NotFoundException($"Food with ID {id} not found.");
 
         return new FoodDto
         {
@@ -55,7 +56,7 @@ public class FoodService : IFoodService
     public async Task<FoodDto?> UpdateFoodAsync(int id, UpdateFoodDto food)
     {
         var existingFood = await _foodRepository.GetFoodByIdAsync(id);
-        if (existingFood == null) return null;
+        if (existingFood == null) throw new NotFoundException($"Food with ID {id} not found.");
 
         existingFood.Name = food.Name;
         existingFood.Calories = food.Calories;
@@ -73,7 +74,7 @@ public class FoodService : IFoodService
     public async Task<bool> DeleteFoodAsync(int id)
     {
         var food = await _foodRepository.GetFoodByIdAsync(id);
-        if (food == null) return false;
+        if (food == null) throw new NotFoundException($"Food with ID {id} not found.");
 
         await _foodRepository.DeleteFoodAsync(food);
         return true;

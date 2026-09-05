@@ -1,6 +1,7 @@
 using PatientApi.Dtos;
 using PatientApi.Repositories;
 using PatientApi.Entities;
+using PatientApi.Exceptions;
 
 namespace PatientApi.Services;
 
@@ -16,13 +17,13 @@ public class FacilityService : IFacilityService
     public async Task<FacilityDto?> GetByIdAsync(int id)
     {
         var facility = await _facilityRepository.GetByIdAsync(id);
-        return facility is null ? null : MapToDto(facility);
+        return facility is null ? throw new NotFoundException($"Facility with ID {id} not found.") : MapToDto(facility);
     }
 
     public async Task<IEnumerable<FacilityDto>> ListFacilitiesAsync()
     {
         var facilities = await _facilityRepository.GetAllAsync();
-        return facilities.Select(MapToDto);
+        return facilities is null ? throw new NotFoundException("No facilities found.") : facilities.Select(MapToDto);
     }
 
     public async Task<FacilityDto> CreateFacilityAsync(CreateFacilityDto facility)
@@ -47,13 +48,19 @@ public class FacilityService : IFacilityService
 
     public async Task<bool> DeleteFacilityAsync(int id)
     {
+        var facility = await _facilityRepository.GetByIdAsync(id);
+        if (facility is null)
+        {
+            throw new NotFoundException($"Facility with ID {id} not found.");
+        }
+
         return await _facilityRepository.DeleteAsync(id);
     }
 
     public async Task<ICollection<PatientDto>> GetPatientsByFacilityIdAsync(int facilityId)
     {
         var patients = await _facilityRepository.GetPatientsByFacilityIdAsync(facilityId);
-        return patients.Select(p => new PatientDto
+        return patients is null ? throw new NotFoundException($"No patients found for Facility ID {facilityId}.") : patients.Select(p => new PatientDto
         {
             PatientId = p.PatientId,
             FirstName = p.FirstName,

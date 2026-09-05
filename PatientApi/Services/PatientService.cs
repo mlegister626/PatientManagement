@@ -1,7 +1,7 @@
 using PatientApi.Dtos;
 using PatientApi.Entities;
 using PatientApi.Repositories;
-
+using PatientApi.Exceptions;
 namespace PatientApi.Services
 {
     public class PatientService : IPatientService
@@ -16,13 +16,13 @@ namespace PatientApi.Services
         public async Task<IEnumerable<PatientDto>> GetAllPatientsAsync()
         {
             var patients = await _repository.GetAllAsync();
-            return patients.Select(MapToDto);
+            return patients is null ? throw new NotFoundException("No patients found.") : patients.Select(MapToDto);
         }
 
         public async Task<PatientDto?> GetPatientByIdAsync(int patientId)
         {
             var patient = await _repository.GetByIdAsync(patientId);
-            return patient is null ? null : MapToDto(patient);
+            return patient is null ? throw new NotFoundException($"Patient with ID {patientId} not found.") : MapToDto(patient);
         }
 
         public async Task<PatientDto> CreatePatientAsync(CreatePatientDto dto)
@@ -41,6 +41,12 @@ namespace PatientApi.Services
 
         public async Task<bool> UpdatePatientAsync(int patientId, UpdatePatientDto dto)
         {
+            var patient = await _repository.GetByIdAsync(patientId);
+            if (patient is null)
+            {
+                throw new NotFoundException($"Patient with ID {patientId} not found.");
+            }
+
             var entity = new Patient
             {
                 PatientId = patientId,
@@ -55,6 +61,11 @@ namespace PatientApi.Services
 
         public async Task<bool> DeletePatientAsync(int patientId)
         {
+            var patient = await _repository.GetByIdAsync(patientId);
+            if (patient is null)
+            {
+                throw new NotFoundException($"Patient with ID {patientId} not found.");
+            }
             return await _repository.DeleteAsync(patientId);
         }
 
