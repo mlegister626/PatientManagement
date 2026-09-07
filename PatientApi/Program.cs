@@ -2,6 +2,8 @@ using Microsoft.EntityFrameworkCore;
 using PatientApi.Data;
 using PatientApi.Repositories;
 using PatientApi.Services;
+using System;
+using PatientApi.ErrorHandling;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -39,6 +41,8 @@ builder.Services.AddScoped<IPatientService, PatientService>();
 builder.Services.AddScoped<IFacilityService, FacilityService>();
 builder.Services.AddScoped<IFoodRepository, FoodRepository>();
 builder.Services.AddScoped<IFoodService, FoodService>();
+builder.Services.AddProblemDetails();
+builder.Services.AddScoped<IExceptionHandler, GlobalExceptionHandler>();
 
 var app = builder.Build();
 
@@ -51,6 +55,7 @@ if (app.Environment.IsDevelopment())
 }
 
 //app.UseHttpsRedirection();
+app.UseExceptionHandler();
 app.UseAuthorization();
 app.MapControllers();
 
