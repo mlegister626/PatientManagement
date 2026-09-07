@@ -7,7 +7,6 @@ public class NotFoundException : Exception
     {
 
     }
-
     public async Task<bool> TryHandleAsync(HttpContext context, Exception exception, CancellationToken cancellationToken = default)
     {
         context.Response.StatusCode = StatusCodes.Status404NotFound;
