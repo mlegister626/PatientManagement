@@ -12,6 +12,7 @@ namespace PatientApi.Data
         public DbSet<Patient> Patients => Set<Patient>();
         public DbSet<Facility> Facilities => Set<Facility>();
         public DbSet<Food> Foods => Set<Food>();
+        public DbSet<MealDelivery> MealDeliveries => Set<MealDelivery>();
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -43,11 +44,36 @@ namespace PatientApi.Data
             modelBuilder.Entity<MealDelivery>(entity =>
             {
                 entity.ToTable("MealDeliveries");
-                entity.HasKey(md => md.MealDeliveryId);
-                entity.Property(md => md.MealDeliveryId).ValueGeneratedOnAdd();
-                entity.Property(md => md.PortionGiven).IsRequired();
-                entity.Property(md => md.MealType).IsRequired();
-                entity.Property(md => md.DateDelivered).IsRequired();
+                entity.HasKey(m => m.MealDeliveryId);
+                entity.Property(m => m.MealDeliveryId).ValueGeneratedOnAdd();
+
+                entity.Property(m => m.PortionGiven)
+                    .IsRequired()
+                    .HasColumnType("double");
+
+                entity.Property(m => m.DateDelivered)
+                    .IsRequired()
+                    .HasColumnType("date");
+
+
+                entity.Property(m => m.MealType)
+                    .IsRequired()
+                    .HasConversion<string>()
+                    .HasMaxLength(20);
+
+                entity.HasOne(m => m.Patient)
+                    .WithMany()
+                    .HasForeignKey(m => m.PatientId)
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
+
+                // Restrict (not Cascade) on purpose: deleting a Food item
+                // shouldn't silently wipe historical delivery records.
+                entity.HasOne(m => m.Food)
+                    .WithMany()
+                    .HasForeignKey(m => m.FoodId)
+                    .OnDelete(DeleteBehavior.Restrict)
+                    .IsRequired();
             });
 
         }
