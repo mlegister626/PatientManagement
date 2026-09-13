@@ -39,6 +39,17 @@ namespace PatientApi.Data
                 entity.Property(f => f.Name).IsRequired().HasMaxLength(100);
                 entity.Property(f => f.Calories).IsRequired();
             });
+
+            modelBuilder.Entity<MealDelivery>(entity =>
+            {
+                entity.ToTable("MealDeliveries");
+                entity.HasKey(md => md.MealDeliveryId);
+                entity.Property(md => md.MealDeliveryId).ValueGeneratedOnAdd();
+                entity.Property(md => md.PortionGiven).IsRequired();
+                entity.Property(md => md.MealType).IsRequired();
+                entity.Property(md => md.DateDelivered).IsRequired();
+            });
+
         }
     }
 }
