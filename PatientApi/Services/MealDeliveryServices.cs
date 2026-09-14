@@ -60,7 +60,7 @@ public class MealDeliveryService : IMealDeliveryService
         var entity = new MealDelivery
         {
             MealDeliveryId = id,
-            PatientId = dto.PatientId,
+            PatientId = existing.PatientId,
             FoodId = dto.FoodId,
             PortionGiven = dto.PortionGiven,
             MealType = dto.MealType,

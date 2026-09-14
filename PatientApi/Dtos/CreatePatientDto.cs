@@ -16,7 +16,7 @@ namespace PatientApi.Dtos
         public string LastName { get; set; } = string.Empty;
 
         [Required]
-        public DateTime DOB { get; set; }
+        public DateTime DOB { get; set; } = DateTime.MinValue;
 
         [Required]
         public int FacilityId { get; set; } = 0;

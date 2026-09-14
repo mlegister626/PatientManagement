@@ -8,8 +8,6 @@ namespace PatientApi.Dtos;
 /// </summary>
 public class UpdateMealDeliveryDto
 {
-    [Required]
-    public int PatientId { get; set; }
 
     [Required]
     public int FoodId { get; set; }

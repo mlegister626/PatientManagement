@@ -87,7 +87,6 @@ public class MealDeliveriesController : ControllerBase
             return BadRequest(ModelState);
         }
 
-        await _patientService.GetPatientByIdAsync(dto.PatientId);
         await _foodService.GetFoodAsync(dto.FoodId);
 
         var updated = await _mealDeliveryService.UpdateMealDeliveryAsync(id, dto);

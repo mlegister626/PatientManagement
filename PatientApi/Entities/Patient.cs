@@ -27,7 +27,7 @@ namespace PatientApi.Entities
 
         [Required]
         [Column("DOB", TypeName = "date")]
-        public DateTime DOB { get; set; }
+        public DateTime DOB { get; set; } = DateTime.MinValue;
 
         [Required]
         [ForeignKey("FacilityId")]
