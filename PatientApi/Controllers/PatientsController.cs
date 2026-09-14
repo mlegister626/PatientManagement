@@ -42,6 +42,10 @@ namespace PatientApi.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<PatientDto>> Create([FromBody] CreatePatientDto dto)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             var facility = await _facilityService.GetByIdAsync(dto.FacilityId);
             var created = await _patientService.CreatePatientAsync(dto);
             return CreatedAtAction(nameof(GetById), new { id = created.PatientId }, created);
@@ -54,6 +58,10 @@ namespace PatientApi.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Update(int id, [FromBody] UpdatePatientDto dto)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             var updated = await _patientService.UpdatePatientAsync(id, dto);
             return NoContent();
         }

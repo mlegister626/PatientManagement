@@ -38,6 +38,10 @@ public class FacilityController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<FacilityDto>> Create([FromBody] CreateFacilityDto dto)
     {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
         var created = await _facilityService.CreateFacilityAsync(dto);
         return CreatedAtAction(nameof(GetById), new { id = created.FacilityId }, created);
     }
@@ -48,6 +52,10 @@ public class FacilityController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Update(int id, [FromBody] UpdateFacilityDto dto)
     {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
         var existingFacility = await _facilityService.GetByIdAsync(id);
         await _facilityService.UpdateFacilityAsync(id, dto);
         return NoContent();

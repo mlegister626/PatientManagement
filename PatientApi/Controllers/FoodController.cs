@@ -32,6 +32,10 @@ public class FoodController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<FoodDto>> CreateFood(CreateFoodDto food)
     {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
         var createdFood = await _foodService.CreateFoodAsync(food);
         return CreatedAtAction(nameof(GetFood), new { id = createdFood.Id }, createdFood);
     }
@@ -39,6 +43,10 @@ public class FoodController : ControllerBase
     [HttpPut("{id}")]
     public async Task<ActionResult<FoodDto>> UpdateFood(int id, UpdateFoodDto food)
     {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
         var updatedFood = await _foodService.UpdateFoodAsync(id, food);
         return Ok(updatedFood);
     }
