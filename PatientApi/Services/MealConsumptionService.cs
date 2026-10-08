@@ -14,18 +14,21 @@ public class MealConsumptionService : IMealConsumptionService
         _mealConsumptionRepository = mealConsumptionRepository;
     }
 
-    public Task<IEnumerable<MealConsumption>> ListAsync()
+    public async Task<IEnumerable<MealConsumptionDto>> ListAsync()
     {
-        return _mealConsumptionRepository.ListAsync();
+        var consumptions = await _mealConsumptionRepository.ListAsync();
+        return consumptions.Select(MapToDto).ToList();
     }
 
-    public async Task<MealConsumption> GetAsync(int id)
+    public async Task<MealConsumptionDto> GetAsync(int id)
     {
         var consumption = await _mealConsumptionRepository.GetAsync(id);
-        return consumption ?? throw new NotFoundException($"Meal consumption with ID {id} not found.");
+        return consumption is null
+            ? throw new NotFoundException($"Meal consumption with ID {id} not found.")
+            : MapToDto(consumption);
     }
 
-    public async Task<MealConsumption> MarkMealEatenAsync(
+    public async Task<MealConsumptionDto> MarkMealEatenAsync(
         int deliveredMealId, MarkMealEatenRequestDTO request)
     {
         ArgumentNullException.ThrowIfNull(request);
@@ -36,20 +39,31 @@ public class MealConsumptionService : IMealConsumptionService
         Validate(request.CaloriesEaten, request.DateEaten, meal.DateDelivered);
         var consumption = meal.MarkEaten(request.CaloriesEaten, request.DateEaten);
         await _mealConsumptionRepository.AddAsync(consumption);
-        return consumption;
+        return MapToDto(consumption);
     }
 
-    public async Task<MealConsumption> UpdateAsync(
+    public async Task<MealConsumptionDto> UpdateAsync(
         int mealConsumptionId, UpdateMealConsumptionRequestDTO request)
     {
         ArgumentNullException.ThrowIfNull(request);
 
-        var consumption = await GetAsync(mealConsumptionId);
+        var consumption = await _mealConsumptionRepository.GetAsync(mealConsumptionId)
+            ?? throw new NotFoundException($"Meal consumption with ID {mealConsumptionId} not found.");
+
         Validate(request.CaloriesEaten, request.DateEaten, consumption.DeliveredMeal.DateDelivered);
 
         consumption.Correct(request.CaloriesEaten, request.DateEaten);
         await _mealConsumptionRepository.UpdateAsync(consumption);
-        return consumption;
+        return MapToDto(consumption);
+    }
+
+    private static MealConsumptionDto MapToDto(MealConsumption consumption)
+    {
+        return new MealConsumptionDto(
+            consumption.MealConsumptionId,
+            consumption.DeliveredMealId,
+            consumption.CaloriesEaten,
+            consumption.DateEaten);
     }
 
     private static void Validate(int caloriesEaten, DateTime dateEaten, DateTime dateDelivered)
