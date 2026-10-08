@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("PatientApi")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+cf22d9c2dee635f4787b2464a129052131d38bab")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8685dcdb6ab53a295b86648bb8c4e2f579bde3c8")]
 [assembly: System.Reflection.AssemblyProductAttribute("PatientApi")]
 [assembly: System.Reflection.AssemblyTitleAttribute("PatientApi")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

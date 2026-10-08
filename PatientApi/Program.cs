@@ -43,6 +43,8 @@ builder.Services.AddScoped<IFoodRepository, FoodRepository>();
 builder.Services.AddScoped<IFoodService, FoodService>();
 builder.Services.AddScoped<IMealDeliveryRepository, MealDeliveryRepository>();
 builder.Services.AddScoped<IMealDeliveryService, MealDeliveryService>();
+builder.Services.AddScoped<IMealConsumptionRepository, MealConsumptionRepository>();
+builder.Services.AddScoped<IMealConsumptionService, MealConsumptionService>();
 builder.Services.AddProblemDetails();
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 
