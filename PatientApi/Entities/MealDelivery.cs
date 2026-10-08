@@ -24,11 +24,6 @@ public class MealDelivery
     [ForeignKey("FoodId")]
     public int FoodId { get; set; }
     public virtual Food Food { get; set; } = null!;
-
-    /// <summary>
-    /// Portion multiplier applied to the Food item's base Calories
-    /// (e.g. 1.0 = full serving, 0.5 = half serving).
-    /// </summary>
     [Required]
     [Column("PortionGiven")]
     public double PortionGiven { get; set; }
@@ -40,4 +35,18 @@ public class MealDelivery
     [Required]
     [Column("DateDelivered", TypeName = "date")]
     public DateTime DateDelivered { get; set; }
+
+    public MealConsumption? MealConsumption { get; private set; }
+    public bool PatientHasEaten => MealConsumption is not null;
+
+    public MealConsumption MarkEaten(int calories, DateTime dateEaten)
+    {
+        if (MealConsumption is not null)
+        {
+            throw new InvalidOperationException("Meal has already been marked as eaten.");
+        }
+
+        MealConsumption = new MealConsumption(this, calories, dateEaten);
+        return MealConsumption;
+    }
 }

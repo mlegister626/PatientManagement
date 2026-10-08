@@ -13,6 +13,7 @@ namespace PatientApi.Data
         public DbSet<Facility> Facilities => Set<Facility>();
         public DbSet<Food> Foods => Set<Food>();
         public DbSet<MealDelivery> MealDeliveries => Set<MealDelivery>();
+        public DbSet<MealConsumption> MealConsumptions => Set<MealConsumption>();
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -73,6 +74,21 @@ namespace PatientApi.Data
                     .WithMany()
                     .HasForeignKey(m => m.FoodId)
                     .OnDelete(DeleteBehavior.Restrict)
+                    .IsRequired();
+            });
+
+            modelBuilder.Entity<MealConsumption>(entity =>
+            {
+                entity.ToTable("MealConsumptions");
+                entity.HasKey(c => c.MealConsumptionId);
+                entity.Property(c => c.MealConsumptionId).ValueGeneratedOnAdd();
+                entity.Property(c => c.CaloriesEaten).IsRequired();
+                entity.Property(c => c.DateEaten).IsRequired();
+
+                entity.HasOne(c => c.DeliveredMeal)
+                    .WithOne(m => m.MealConsumption)
+                    .HasForeignKey<MealConsumption>(c => c.DeliveredMealId)
+                    .OnDelete(DeleteBehavior.Cascade)
                     .IsRequired();
             });
 
