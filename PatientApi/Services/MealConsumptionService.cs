@@ -1,3 +1,4 @@
+using PatientApi.Dtos;
 using PatientApi.Entities;
 using PatientApi.Exceptions;
 using PatientApi.Repositories;
@@ -25,24 +26,28 @@ public class MealConsumptionService : IMealConsumptionService
     }
 
     public async Task<MealConsumption> MarkMealEatenAsync(
-        int deliveredMealId, int caloriesEaten, DateTime dateEaten)
+        int deliveredMealId, MarkMealEatenRequestDTO request)
     {
+        ArgumentNullException.ThrowIfNull(request);
+
         var meal = await _mealConsumptionRepository.GetDeliveredMealForConsumptionAsync(deliveredMealId)
             ?? throw new NotFoundException($"Meal delivery with ID {deliveredMealId} not found.");
 
-        Validate(caloriesEaten, dateEaten, meal.DateDelivered);
-        var consumption = meal.MarkEaten(caloriesEaten, dateEaten);
+        Validate(request.CaloriesEaten, request.DateEaten, meal.DateDelivered);
+        var consumption = meal.MarkEaten(request.CaloriesEaten, request.DateEaten);
         await _mealConsumptionRepository.AddAsync(consumption);
         return consumption;
     }
 
     public async Task<MealConsumption> UpdateAsync(
-        int mealConsumptionId, int caloriesEaten, DateTime dateEaten)
+        int mealConsumptionId, UpdateMealConsumptionRequestDTO request)
     {
-        var consumption = await GetAsync(mealConsumptionId);
-        Validate(caloriesEaten, dateEaten, consumption.DeliveredMeal.DateDelivered);
+        ArgumentNullException.ThrowIfNull(request);
 
-        consumption.Correct(caloriesEaten, dateEaten);
+        var consumption = await GetAsync(mealConsumptionId);
+        Validate(request.CaloriesEaten, request.DateEaten, consumption.DeliveredMeal.DateDelivered);
+
+        consumption.Correct(request.CaloriesEaten, request.DateEaten);
         await _mealConsumptionRepository.UpdateAsync(consumption);
         return consumption;
     }
